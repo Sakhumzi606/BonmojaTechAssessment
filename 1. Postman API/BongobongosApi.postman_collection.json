@@ -19,7 +19,7 @@
 							"});\r",
 							"var resJSON = pm.response.json();\r",
 							"pm.test(\"Response contains token\", function (){\r",
-							"  pm.expect(resJSON.token).to.eql(\"QpwL5tke4Pnpja7X4\");\r",
+							"  pm.expect(resJSON.token).to.eql(pm.environment.get(\"token\"));\r",
 							"});\r",
 							""
 						],
@@ -34,7 +34,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "${token}",
+							"value": "Qpw",
 							"type": "string"
 						}
 					]
@@ -78,12 +78,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							"var resJSON = pm.response.json();\r",
-							"pm.test(\"Response contains token\", function (){\r",
-							"  pm.expect(resJSON.token).to.eql(\"QpwL5tke4Pnpja7X4\");\r",
+							"pm.test(\"Response contains error\", function (){\r",
+							"  pm.expect(resJSON.error).to.eql(\"user not found\");\r",
 							"});\r",
 							""
 						],
@@ -113,7 +113,71 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"raw": "{\r\n    \"email\": \"eve.holtreqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/login",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvalidAPIKeyLoginValidation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var resJSON = pm.response.json();\r",
+							"pm.test(\"Response contains token\", function (){\r",
+							"  pm.expect(resJSON.token).to.eql(\"QpwL5tke4Pnpja7X4\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "fpwL5tke4Pnpja7X4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -188,7 +252,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://reqres.in/api/user/2",
+					"raw": "https://reqres.in/api/user/23",
 					"protocol": "https",
 					"host": [
 						"reqres",
@@ -197,7 +261,7 @@
 					"path": [
 						"api",
 						"user",
-						"2"
+						"23"
 					]
 				}
 			},
@@ -356,6 +420,69 @@
 						"login"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvalidUserInfoUpdateValidation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "${token}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"\",\r\n    \"job\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "https://reqres.in/api/user/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"user",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserList",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		}
