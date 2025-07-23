@@ -11,6 +11,9 @@ Scenario: Update user profile information
       | John Doe | Software Dev 	|
     Then I should receive a response with status code 200
     And the updated user profile should match the following
+      | name       | job         	|
+      | John Doe | Software Dev 	|
+    Then the user logs out  
 
 2.	Login with expired/invalid token (session handling) 
 
